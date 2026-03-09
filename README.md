@@ -8,7 +8,7 @@ If ordering the board with assembly, make sure the orientation of the tantalum c
 
 No guarantees on the level of noise, I am inexperienced in PCB design. Raise an issue if you have advice or ideas.
 
-⚠️ I couldn't yet test if headset detection is working or not.
+⚠️ I couldn't yet test if headset detection is working or not. The voltage levels on MICDET seem to change (when music is playing and jack detection is turned on via registers), but I could not confirm that the "is headset plugged in?" register value changes — need a kernel driver that allows reading from I2C when it's loaded.
 
 | ![Render of the PCB from the front](aud_f.png) | ![Render of the PCB from the back](aud_b.png) |
 | ------------------- | --------------------- |
@@ -47,7 +47,9 @@ My configuration registers ([see binary](tad5212-i2c-2-1dev.bin)):
 
 ## Firmware editing
 
-I do not use the TI tools for firmware editing, I write it by hand.
+I do not use the TI tools for firmware editing (TI rejected my requests, likely because I categoried myself as a "hobbyist"), instead I change the firmware by hand.
+
+The firmware is basically a bunch of headers surrounding a set of I2C register addresses and values to write. See [pcm6240.c](https://lwn.net/Articles/961340/).
 
 If using ImHex, this pattern could be convenient to use:
 
